@@ -1,0 +1,337 @@
+{% load static %}
+{% load custom_tags %}
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+  <style>
+    .layout-menu {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+        height: 100vh; /* Full height */
+        overflow-y: auto; /* Enable vertical scrolling */
+    }
+  </style>
+    <div class="app-brand demo">
+      <a href="" class="app-brand-link">
+        {% comment %} <span class="app-brand-logo demo">  
+          <img src="{% static 'assets/img/logo/logo-icon.png' %}" alt="" width="32" height="22">
+        </span> {% endcomment %}
+        <span class="app-brand-text demo menu-text fw-bold">Part Tracking</span>
+      </a>
+
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+        <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
+        <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
+      </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+      <li class="menu-item {% active request 'dashboard' %}">
+        <a href="{% url 'dashboard' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <div data-i18n="Dashboard">Dashboard</div>
+        </a>
+      </li>
+      {% comment %} {% if request.user.is_superuser == True %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'lokasi_page' or request.resolver_match.url_name == 'equipment_page' or request.resolver_match.url_name == 'document_page' or request.resolver_match.url_name == 'partGroup_list_page' or request.resolver_match.url_name == 'masterBarang_page' or request.resolver_match.url_name == 'problem_page' or request.resolver_match.url_name == 'pengajuan_page' or request.resolver_match.url_name == 'barang_page'%} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-archive"></i>
+          <div data-i18n="Data Master">Data Master</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'lokasi_page' %}">
+            <a href="{% url 'lokasi_page' %}" class="menu-link">
+              <div data-i18n="Lokasi">Lokasi</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'equipment_page' %}">
+            <a href="{% url 'equipment_page' %}" class="menu-link">
+              <div data-i18n="Equipment">Equipment</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'problem_page' %}">
+            <a href="{% url 'problem_page' %}" class="menu-link">
+              <div data-i18n="Problem">Problem</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'pengajuan_page' %}">
+            <a href="{% url 'pengajuan_page' %}" class="menu-link">
+              <div data-i18n="Pengajuan">Pengajuan</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'document_page' %}">
+            <a href="{% url 'document_page' %}" class="menu-link">
+              <div data-i18n="Doc BC">Doc BC</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'partGroup_list_page' %}">
+            <a href="{% url 'partGroup_list_page' %}" class="menu-link">
+              <div data-i18n="Part Group">Part Group</div>
+            </a>
+          </li>
+          <li class="menu-item {% if request.resolver_match.url_name == 'masterBarang_page' or request.resolver_match.url_name == 'detail-page' %} active {% endif %}">
+            <a href="{% url 'masterBarang_page' %}" class="menu-link">
+              <div data-i18n="Master Barang">Master Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'barang_page'%}">
+            <a href="{% url 'barang_page' %}" class="menu-link">
+              <div data-i18n="Barang">Barang</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if request.user.is_admin == True %}
+      <li class="menu-item {% active request 'lokasi_page' %}">
+        <a href="{% url 'lokasi_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-location"></i>
+          <div data-i18n="Lokasi">Lokasi</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'equipment_page' %}">
+        <a href="{% url 'equipment_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-3d-cube-sphere"></i>
+          <div data-i18n="Equipment">Equipment</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'problem_page' %}">
+        <a href="{% url 'problem_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-error-404-off"></i>
+          <div data-i18n="Problem">Problem</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'pengajuan_page' %}">
+        <a href="{% url 'pengajuan_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-folder-up"></i>
+          <div data-i18n="Pengajuan">Pengajuan</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'document_page' %}">
+        <a href="{% url 'document_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-clipboard"></i>
+          <div data-i18n="Doc BC">Doc BC</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'partGroup_list_page' %}">
+        <a href="{% url 'partGroup_list_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-category"></i>
+          <div data-i18n="Part Group">Part Group</div>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser == False %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'masterBarang_page' or request.resolver_match.url_name == 'detail-page' %} active {% endif %}">
+        <a href="{% url 'masterBarang_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-cube"></i>
+          <div data-i18n="Master Barang">Master Barang</div>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser or request.user.department.deptType == 'Gudang' and request.user.is_user %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'form_barang' or request.resolver_match.url_name == 'history-barang-masuk' or request.resolver_match.url_name == 'goods-receipt-page' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-cube-plus"></i>
+          <div data-i18n="Barang Masuk">Barang Masuk</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'form_barang' %}">
+            <a href="{% url 'form_barang' %}" class="menu-link">
+              <div data-i18n="Form Barang Masuk">Form Barang Masuk</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'history-barang-masuk' %}">
+            <a href="{% url 'history-barang-masuk' %}" class="menu-link">
+              <div data-i18n="History Barang Masuk">History Barang Masuk</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'goods-receipt-page' %}">
+            <a href="{% url 'goods-receipt-page' %}" class="menu-link">
+              <div data-i18n="Daftar Goods Receipt">Daftar Goods Receipt</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if request.user.is_admin == False %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'form-mutasi-barang' or request.resolver_match.url_name == 'page-keranjang-barang' or request.resolver_match.url_name == 'history-barang-mutasi' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-cube-send"></i>
+          <div data-i18n="Barang Mutasi">Barang Mutasi</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'form-mutasi-barang' %}">
+            <a href="{% url 'form-mutasi-barang' %}" class="menu-link">
+              <div data-i18n="Daftar Barang">Daftar Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'page-keranjang-barang' %}">
+            <a href="{% url 'page-keranjang-barang' %}" class="menu-link">
+              <div data-i18n="Keranjang Barang">Keranjang Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'history-barang-mutasi' %}">
+            <a href="{% url 'history-barang-mutasi' %}" class="menu-link">
+              <div data-i18n="History Mutasi Barang">History Mutasi Barang</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item {% if request.resolver_match.url_name == 'form-mutasi-equipment' or request.resolver_match.url_name == 'page-keranjang-equipment' or request.resolver_match.url_name == 'history-equipment-mutasi' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-album"></i>
+          <div data-i18n="Equipment Mutasi">Equipment Mutasi</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'form-mutasi-equipment' %}">
+            <a href="{% url 'form-mutasi-equipment' %}" class="menu-link">
+              <i class="menu-icon tf-icons ti ti-forms"></i>
+              <div data-i18n="Daftar Equipment">Daftar Equipment</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'page-keranjang-equipment' %}">
+            <a href="{% url 'page-keranjang-equipment' %}" class="menu-link">
+              <div data-i18n="Keranjang Equipment">Keranjang Equipment</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser or request.user.department.deptType == 'Gudang' and request.user.is_user %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'daftar-barang-keluar' or request.resolver_match.url_name == 'keranjang-barang-keluar' or request.resolver_match.url_name == 'history-barang-keluar' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-cube-off"></i>
+          <div data-i18n="Barang Keluar">Barang Keluar</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'daftar-barang-keluar' %}">
+            <a href="{% url 'daftar-barang-keluar' %}" class="menu-link">
+              <div data-i18n="Daftar Barang">Daftar Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'keranjang-barang-keluar' %}">
+            <a href="{% url 'keranjang-barang-keluar' %}" class="menu-link">
+              <div data-i18n="Keranjang Barang">Keranjang Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'history-barang-keluar' %}">
+            <a href="{% url 'history-barang-keluar' %}" class="menu-link">
+              <div data-i18n="History Barang Keluar">History Barang Keluar</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="menu-item {% if request.resolver_match.url_name == 'daftar-equipment-keluar' or request.resolver_match.url_name == 'keranjang-equipment-keluar' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-album-off"></i>
+          <div data-i18n="Equipment Keluar">Equipment Keluar</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'daftar-equipment-keluar' %}">
+            <a href="{% url 'daftar-equipment-keluar' %}" class="menu-link">
+              <div data-i18n="Daftar Equipment">Daftar Equipment</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'keranjang-equipment-keluar' %}">
+            <a href="{% url 'keranjang-equipment-keluar' %}" class="menu-link">
+              <div data-i18n="Keranjang Equipment">Keranjang Equipment</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %}
+      {% if request.user.is_admin == False %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'daftar-barang-request' or request.resolver_match.url_name == 'page-keranjang-request' or request.resolver_match.url_name == 'request-list-page' or request.resolver_match.url_name == 'detail-request-page' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-arrows-transfer-down"></i>
+          <div data-i18n="Request Barang">Request Barang</div>
+          <div id="request-counter-badge" class="badge bg-primary rounded-pill ms-auto">{{request_barang_count}}</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item {% active request 'daftar-barang-request' %}">
+            <a href="{% url 'daftar-barang-request' %}" class="menu-link">
+              <div data-i18n="Daftar Barang">Daftar Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'page-keranjang-request' %}">
+            <a href="{% url 'page-keranjang-request' %}" class="menu-link">
+              <div data-i18n="Keranjang Request Barang">Keranjang Request Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% if request.resolver_match.url_name == 'request-list-page' or request.resolver_match.url_name == 'detail-request-page' %} active open {% endif %}">
+            <a href="{% url 'request-list-page' %}" class="menu-link">
+                <div data-i18n="Daftar Request">Daftar Request</div>
+            </a>
+        </li>        
+        </ul>
+      </li>
+      {% endif %} 
+      {% if request.user.is_admin == False %}
+      <li class="menu-item {% if request.resolver_match.url_name == 'daftar-barang-return' or request.resolver_match.url_name == 'page-keranjang-return' or request.resolver_match.url_name == 'return-list-page' or request.resolver_match.url_name == 'detail-return-page' %} active open {% endif %}">
+        <a href="javascript:void(0);" class="menu-link menu-toggle">
+          <i class="menu-icon tf-icons ti ti-git-pull-request"></i>
+          <div data-i18n="Return Barang">Return Barang</div>
+          <div id="return-counter-badge" class="badge bg-primary rounded-pill ms-auto">{{return_barang_count}}</div>
+        </a>
+        <ul class="menu-sub">
+          {% endif %} 
+          {% if request.user.is_superuser or request.user.department.deptType == 'Genba' and request.user.is_user %}
+          <li class="menu-item {% active request 'daftar-barang-return' %}">
+            <a href="{% url 'daftar-barang-return' %}" class="menu-link">
+              <div data-i18n="Daftar Barang">Daftar Barang</div>
+            </a>
+          </li>
+          <li class="menu-item {% active request 'page-keranjang-return' %}">
+            <a href="{% url 'page-keranjang-return' %}" class="menu-link">
+              <div data-i18n="Keranjang Return Barang">Keranjang Return Barang</div>
+            </a>
+          </li>
+          {% endif %} 
+          {% if request.user.is_admin == False %}
+          <li class="menu-item {% if request.resolver_match.url_name == 'return-list-page' or request.resolver_match.url_name == 'detail-return-page' %} active open {% endif %}">
+            <a href="{% url 'return-list-page' %}" class="menu-link">
+                <div data-i18n="Daftar Return">Daftar Return</div>
+            </a>
+          </li>
+        </ul>
+      </li>
+      {% endif %} 
+      {% if request.user.is_superuser == True %}
+      <li class="menu-item {% active request 'kartu-stock-page' %}">
+        <a href="{% url 'kartu-stock-page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-report"></i>
+          <div data-i18n="Kartu Stock">Kartu Stock</div>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser == True %}
+      <li class="menu-item {% active request 'department_list_page' %}">
+        <a href="{% url 'department_list_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-building"></i>
+          <div data-i18n="Department">Department</div>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.is_admin == True or request.user.is_superuser == True %}
+      <li class="menu-item {% active request 'user_list_page' %}">
+        <a href="{% url 'user_list_page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-users"></i>
+          <div data-i18n="Users">Users</div>
+        </a>
+      </li>
+      {% endif %}
+      {% if request.user.is_superuser == True %}
+      <li class="menu-item {% active request 'export-db-page' %}">
+        <a href="{% url 'export-db-page' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-database"></i>
+          <div data-i18n="Export Database">Export Database</div>
+        </a>
+      </li>
+      {% endif %} {% endcomment %}
+      <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; height: 406px; right: 4px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 93px;"></div></div></ul>
+</aside>
+
+<script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+
+

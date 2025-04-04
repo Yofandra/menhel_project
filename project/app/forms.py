@@ -3,7 +3,6 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm as BaseUserCreationForm, UserChangeForm as BaseUserChangeForm, ReadOnlyPasswordHashField
 from app.models import User
 
-
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
@@ -12,7 +11,13 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'department')
+        fields = ('username',)
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username sudah digunakan. Silakan pilih username lain.")
+        return username
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
@@ -24,6 +29,7 @@ class UserCreationForm(forms.ModelForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])
+        user.role = 'user'  
         if commit:
             user.save()
         return user
@@ -35,7 +41,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'is_superuser', 'department')
+        fields = ('username', 'password', 'is_superuser')
 
     def clean_password(self):
         return self.initial["password"]

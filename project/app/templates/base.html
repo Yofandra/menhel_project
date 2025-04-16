@@ -36,10 +36,13 @@
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css'%}" />
     <!-- Vendor -->
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/quill/katex.css'%}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/quill/editor.css' %}" />
     
     <!-- Page CSS -->
     <link rel="stylesheet" href="{% static 'assets/vendor/css/pages/cards-advance.css' %}"/>
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/sweetalert2/sweetalert2.css'%}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/css/pages/app-chat.css' %}" />
     
     <!-- Helpers -->
     <script src="{% static 'assets/vendor/js/helpers.js' %}"></script>
@@ -111,12 +114,18 @@
     <script src="{% static 'assets/vendor/libs/select2/select2.js' %}"></script>
     <script src="{% static 'assets/js/form-layouts.js' %}"></script>
 
+    <script src="{% static 'assets/vendor/libs/quill/katex.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/quill/quill.js' %}"></script>
+
+
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
     {% comment %} <script src="{% static 'assets/js/charts-apex.js' %}"></script> {% endcomment %}
 
     <!-- Page JS -->
+    <script src="{% static 'assets/js/app-chat.js' %}"></script>
     <script src="{% static 'assets/js/dashboards-analytics.js' %}"></script>
+    <script src="{% static 'assets/js/forms-editors.js' %}"></script>
 
     {% if messages %}
         {% for msg in messages %}

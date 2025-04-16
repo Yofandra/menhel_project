@@ -15,7 +15,7 @@
         {% comment %} <span class="app-brand-logo demo">  
           <img src="{% static 'assets/img/logo/logo-icon.png' %}" alt="" width="32" height="22">
         </span> {% endcomment %}
-        <span class="app-brand-text demo menu-text fw-bold">Part Tracking</span>
+        <span class="app-brand-text demo menu-text fw-bold">Teman Bercerita</span>
       </a>
 
       <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -27,10 +27,28 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-      <li class="menu-item {% active request 'dashboard' %}">
-        <a href="{% url 'dashboard' %}" class="menu-link">
+      <li class="menu-item {% active request 'pesan' %}">
+        <a href="{% url 'pesan' %}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-smart-home"></i>
-          <div data-i18n="Dashboard">Dashboard</div>
+          <div data-i18n="Pesan">Pesan</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'emosi' %}">
+        <a href="{% url 'emosi' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <div data-i18n="Klasifikasi Emosi">Klasifikasi Emosi</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'pemodelan' %}">
+        <a href="{% url 'pemodelan' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <div data-i18n="Pemodelan Topik">Pemodelan Topik</div>
+        </a>
+      </li>
+      <li class="menu-item {% active request 'ringkasan' %}">
+        <a href="{% url 'ringkasan' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <div data-i18n="Ringkasan">Ringkasan</div>
         </a>
       </li>
       {% comment %} {% if request.user.is_superuser == True %}

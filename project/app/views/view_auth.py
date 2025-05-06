@@ -8,7 +8,7 @@ from app.models import User
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('pesan')
     
     if 'next' in request.GET:
         messages.warning(request, 'Anda harus login terlebih dahulu')
@@ -21,7 +21,7 @@ def login(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                return redirect('dashboard')
+                return redirect('pesan')
             else:
                 messages.error(request, 'Username atau password salah')
         else:
@@ -34,7 +34,7 @@ def login(request):
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('pesan')
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -45,7 +45,7 @@ def register(request):
             user = form.save()
             auth_login(request, user)
             messages.success(request, 'Registrasi berhasil. Anda telah login.')
-            return redirect('dashboard')
+            return redirect('pesan')
         else:
             messages.error(request, 'Terjadi kesalahan saat registrasi. Silakan periksa kembali data Anda.')
     else:

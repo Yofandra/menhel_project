@@ -81,7 +81,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mental_health',
         'USER': 'postgres',
-        'PASSWORD': '180103',
+        'PASSWORD': 'root',
         'HOST': 'localhost',  
         'PORT': '5432',  
     }

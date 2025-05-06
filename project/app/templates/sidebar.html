@@ -27,27 +27,33 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
+      <li class="menu-item {% active request 'dashboard' %}">
+        <a href="{% url 'dashboard' %}" class="menu-link">
+          <i class="menu-icon tf-icons ti ti-home"></i>
+          <div data-i18n="Dashboard">Dashboard</div>
+        </a>
+      </li>
       <li class="menu-item {% active request 'pesan' %}">
         <a href="{% url 'pesan' %}" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <i class="menu-icon tf-icons ti ti-message-2"></i>
           <div data-i18n="Pesan">Pesan</div>
         </a>
       </li>
       <li class="menu-item {% active request 'emosi' %}">
         <a href="{% url 'emosi' %}" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <i class="menu-icon tf-icons ti ti-mood-happy"></i>
           <div data-i18n="Klasifikasi Emosi">Klasifikasi Emosi</div>
         </a>
       </li>
       <li class="menu-item {% active request 'pemodelan' %}">
         <a href="{% url 'pemodelan' %}" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <i class="menu-icon tf-icons ti ti-article"></i>
           <div data-i18n="Pemodelan Topik">Pemodelan Topik</div>
         </a>
       </li>
       <li class="menu-item {% active request 'ringkasan' %}">
         <a href="{% url 'ringkasan' %}" class="menu-link">
-          <i class="menu-icon tf-icons ti ti-smart-home"></i>
+          <i class="menu-icon tf-icons ti ti-notes"></i>
           <div data-i18n="Ringkasan">Ringkasan</div>
         </a>
       </li>

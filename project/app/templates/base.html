@@ -34,10 +34,12 @@
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css'%}" />
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css'%}" />
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css'%}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/dropzone/dropzone.css' %}" />
     <!-- Vendor -->
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/@form-validation/umd/styles/index.min.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/quill/katex.css'%}" />
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/quill/editor.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/tagify/tagify.css' %}" />
     
     <!-- Page CSS -->
     <link rel="stylesheet" href="{% static 'assets/vendor/css/pages/cards-advance.css' %}"/>
@@ -117,7 +119,9 @@
     <script src="{% static 'assets/vendor/libs/quill/katex.js' %}"></script>
     <script src="{% static 'assets/vendor/libs/quill/quill.js' %}"></script>
 
+    <script src="{% static 'assets/vendor/libs/tagify/tagify.js' %}"></script>
 
+    <script src="{% static 'assets/vendor/libs/dropzone/dropzone.js' %}"></script>
     <!-- Main JS -->
     <script src="{% static 'assets/js/main.js' %}"></script>
     {% comment %} <script src="{% static 'assets/js/charts-apex.js' %}"></script> {% endcomment %}
@@ -126,6 +130,7 @@
     <script src="{% static 'assets/js/app-chat.js' %}"></script>
     <script src="{% static 'assets/js/dashboards-analytics.js' %}"></script>
     <script src="{% static 'assets/js/forms-editors.js' %}"></script>
+    <script src="{% static 'assets/js/app-ecommerce-product-add.js' %}"></script>
 
     {% if messages %}
         {% for msg in messages %}

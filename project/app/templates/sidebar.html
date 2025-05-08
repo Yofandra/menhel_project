@@ -27,12 +27,12 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-      <li class="menu-item {% active request 'dashboard' %}">
+      {% comment %} <li class="menu-item {% active request 'dashboard' %}">
         <a href="{% url 'dashboard' %}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-home"></i>
           <div data-i18n="Dashboard">Dashboard</div>
         </a>
-      </li>
+      </li> {% endcomment %}
       <li class="menu-item {% active request 'pesan' %}">
         <a href="{% url 'pesan' %}" class="menu-link">
           <i class="menu-icon tf-icons ti ti-message-2"></i>

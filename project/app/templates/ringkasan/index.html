@@ -34,6 +34,44 @@
     </div>
     <!-- /Full Editor -->
 
+    <h3>TF-IDF Matrix</h3>
+<table>
+  <thead>
+    <tr>
+      {% for feature in feature_names %}
+        <th>{{ feature }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in tfidf_matrix %}
+      <tr>
+        {% for value in row %}
+          <td>{{ value|floatformat:2 }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Cosine Similarity Matrix</h3>
+<pre>{{ cosine_similarity }}</pre>
+
+<h3>Graph Edges</h3>
+<ul>
+  {% for edge in graph_edges %}
+    <li>{{ edge }}</li>
+  {% endfor %}
+</ul>
+
+<h3>PageRank Scores</h3>
+<ul>
+  {% for index, score in pagerank_scores.items %}
+    <li>Kalimat {{ index }}: {{ score|floatformat:4 }}</li>
+  {% endfor %}
+</ul>
+
+
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
 

@@ -22,16 +22,55 @@
         <h5 class="card-header">Ringkasan Teks</h5>
         <div class="card-body">
           <div id="full-editor">
-            <h6>Quill Rich Text Editor</h6>
-            <p>
-              Cupcake ipsum dolor sit amet. Halvah cheesecake chocolate bar gummi bears cupcake. Pie
-              macaroon bear claw. Soufflé I love candy canes I love cotton candy I love.
-            </p>
+            <h6>Original</h6>
+            <p>{{ original }}</p>
+            <h6>Hasil Pre Processing</h6>
+            <p>{{ processed }}</p>
+            <h6>Hasil Ringkasan</h6>
+            <p>{{ summary }}</p>
           </div>
         </div>
       </div>
     </div>
     <!-- /Full Editor -->
+
+    <h3>TF-IDF Matrix</h3>
+<table>
+  <thead>
+    <tr>
+      {% for feature in feature_names %}
+        <th>{{ feature }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in tfidf_matrix %}
+      <tr>
+        {% for value in row %}
+          <td>{{ value|floatformat:2 }}</td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Cosine Similarity Matrix</h3>
+<pre>{{ cosine_similarity }}</pre>
+
+<h3>Graph Edges</h3>
+<ul>
+  {% for edge in graph_edges %}
+    <li>{{ edge }}</li>
+  {% endfor %}
+</ul>
+
+<h3>PageRank Scores</h3>
+<ul>
+  {% for index, score in pagerank_scores.items %}
+    <li>Kalimat {{ index }}: {{ score|floatformat:4 }}</li>
+  {% endfor %}
+</ul>
+
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>

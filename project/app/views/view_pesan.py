@@ -1,4 +1,4 @@
-from app.models import ChatLogs, User
+from app.models import ChatLogs, User, ChatSession
 from django.db import models
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -9,6 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
 from django.views import View
+from django.views.decorators.http import require_POST
 
 def pesan(request):
     return render(request, 'pesan/index.html')
@@ -18,9 +19,10 @@ def chat_with_rasa(request):
     if request.method == "POST":
         data = json.loads(request.body)
         message = data.get("message")
+        session = ChatSession.objects.filter(user=request.user, is_open=True).first()
 
         chat_logs = ChatLogs.objects.create(
-            user=request.user,
+            session=session,
             message=message,
             tanggal=datetime.now()
         )
@@ -40,10 +42,37 @@ def chat_with_rasa(request):
     return JsonResponse({"error": "Invalid method"}, status=405)
 
 def get_chat_logs(request):
-    logs = ChatLogs.objects.filter(user=request.user).order_by('tanggal')
+    logs = ChatLogs.objects.filter(session__user = request.user).order_by('tanggal')
     data = [{
         "message": log.message,
         "response": log.response,
-        "datetime": log.tanggal.strftime('%I:%M %p')  # contoh: 10:30 AM
+        "datetime": log.tanggal.strftime('%I:%M %p')  
     } for log in logs]
     return JsonResponse({"chat_logs": data})
+
+@csrf_exempt
+def create_chat_session(request):
+    if request.method == "POST":
+        jumlah_session = ChatSession.objects.filter(user=request.user).count()
+        user = request.user
+        session = ChatSession.objects.create(user=user, nama=f"sesi {jumlah_session + 1}")
+        return JsonResponse({"session_id": session.id})
+    return JsonResponse({"error": "Invalid method"}, status=405)
+
+def get_chat_session_status(request):
+    open_session = ChatSession.objects.filter(user=request.user, is_open=True).first()
+    if open_session:
+        return JsonResponse({
+            "session_exists": True,
+        })
+    return JsonResponse({"session_exists": False})
+
+@require_POST
+@csrf_exempt
+def close_chat_session(request):
+    session = ChatSession.objects.filter(user=request.user, is_open=True).first()
+    if session:
+        session.is_open = False
+        session.save()
+        return JsonResponse({"status": "closed"})
+    return JsonResponse({"error": "No open session"}, status=404)

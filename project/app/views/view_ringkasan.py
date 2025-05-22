@@ -1,5 +1,5 @@
 import nltk
-nltk.data.path.append("D:/KULIAH/SKRIPSI BISMILLAH/APLIKASI/menhel_project/project/nltk_data")
+nltk.data.path.append("nltk_data")
 
 from django.shortcuts import render
 from utils.preprocessing import casefolding, tokenization, remove_punctuation, stopword_removal, stemming

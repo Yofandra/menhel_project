@@ -7,21 +7,11 @@
 {% endblock %}
 
 {% block content %}
-{% comment %} <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="py-3 mb-4"><span class="text-muted fw-light">Welcome </span> {{request.user.username}}</h4>
-    <div class="row">
-    </div>
-</div> {% endcomment %}
-
 <!-- Content -->
 
 <div class="container-xxl flex-grow-1 container-p-y">
-
   <div class="app-ecommerce">
-
     <div class="row">
-
-      <!-- Second column -->
       <div class="col-12">
         <!-- Organize Card -->
         <div class="card mb-4">
@@ -29,21 +19,47 @@
             <h5 class="card-title mb-0">Pemodelan Topik</h5>
           </div>
           <div class="card-body">
-            <!-- Tags -->
+            <!-- Hasil Clustering Data -->
+            <h4 class="text-center mb-4">Hasil Clustering Data</h4>
+            <div class="table-responsive">
+              {{ data|safe }}
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Prediksi Kategori Teks Baru -->
+            <h5>Prediksi Kategori Teks Baru</h5>
+            <form method="post" class="mt-3">
+              {% csrf_token %}
+              <div class="mb-3">
+                <textarea name="text_input" class="form-control" rows="3" placeholder="Masukkan teks di sini..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Prediksi</button>
+            </form>
+
+            {% if prediction %}
+              <div class="alert alert-info mt-4">
+                <strong>General Topic:</strong> {{ prediction }}
+              </div>
+            {% endif %}
+
+            <hr class="my-4">
+
+            <!-- Topik Tersedia -->
+            <h6>Topik Tersedia</h6>
             <div class="mb-3">
-              <label for="ecommerce-product-tags" class="form-label mb-1">Topik</label>
+              <label for="ecommerce-product-tags" class="form-label">Daftar Topik</label>
               <input
                 id="ecommerce-product-tags"
                 class="form-control"
                 name="ecommerce-product-tags"
-                value="Normal,Standard,Premium"
-                aria-label="Product Tags" />
+                value="Normal, Standard, Premium"
+                readonly />
             </div>
           </div>
         </div>
         <!-- /Organize Card -->
       </div>
-      <!-- /Second column -->
     </div>
   </div>
 </div>

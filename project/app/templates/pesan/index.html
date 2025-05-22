@@ -47,14 +47,18 @@
             </div>
             <div class="chat-history-body bg-body">
               <ul class="list-unstyled chat-history">
-
               </ul>
+              <div class="message-actions d-flex align-items-center justify-content-center">
+                <button type="button" id="session-btn" class="btn btn-success d-flex">
+                  <span class="align-middle d-none">Cek Sesi</span>
+                </button>
+              </div>
             </div>
             <!-- Chat message form -->
             <div class="chat-history-footer shadow-sm">
               <form id="chat-form" class="form-send-message d-flex justify-content-between align-items-center">
                 <input
-                  class="form-control message-input border-0 me-3 shadow-none"
+                  class="form-control message-input border-0 me-1 shadow-none"
                   placeholder="Mau curhat apa nih?"
                   id="user-message"/>
                 <div class="message-actions d-flex align-items-center">
@@ -104,12 +108,12 @@
             </div>
             <div class="user-avatar flex-shrink-0 ms-3">
               <div class="avatar avatar-sm">
-                <img src="${avatarUrl}" alt="Avatar" class="rounded-circle" />
+                <i class="ti ti-user ti-xs border border-2 p-1 rounded-circle"></i>
               </div>
             </div>` : `
             <div class="user-avatar flex-shrink-0 me-3">
               <div class="avatar avatar-sm">
-                <img src="${avatarUrl}" alt="Avatar" class="rounded-circle" />
+                <i class="ti ti-user ti-xs border border-2 p-1 rounded-circle"></i>
               </div>
             </div>
             <div class="chat-message-wrapper flex-grow-1">
@@ -145,7 +149,7 @@
     $("#user-message").val("");
 
     $.ajax({
-      url: "/chat/",
+      url: "{% url 'chat_with_rasa' %}",
       method: "POST",
       contentType: "application/json",
       data: JSON.stringify({ message }),
@@ -160,6 +164,60 @@
 
   $(document).ready(function() {
     loadInitialChats();
+    const $input = $("#user-message");
+    const $sessionBtn = $("#session-btn");
+    let currentSessionId = null;
+
+    function getCSRFToken() {
+      return $("input[name='csrfmiddlewaretoken']").val();
+    }
+
+    function updateUI(sessionExists) {
+      if (sessionExists) {
+        $input.prop("disabled", false);
+        $sessionBtn.html('<span class="d-md-inline-block d-none">Tutup Sesi</span>');
+        $sessionBtn.off("click").on("click", closeSession);
+      } else {
+        $input.prop("disabled", true);
+        $sessionBtn.html('<span class="d-md-inline-block d-none">Buat Sesi</span>');
+        $sessionBtn.off("click").on("click", createSession);
+      }
+    }
+
+    // Cek status sesi saat awal
+    $.get("{% url 'get_chat_session_status' %}", function (res) {
+      currentSessionId = res.session_id || null;
+      updateUI(res.session_exists);
+    });
+
+    // Buat sesi baru
+    function createSession(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{% url 'create_chat_session' %}",
+        method: "POST",
+        headers: { "X-CSRFToken": getCSRFToken() },
+        success: function (res) {
+          currentSessionId = res.session_id;
+          updateUI(true);
+        }
+      });
+    }
+
+    // Tutup sesi
+    function closeSession(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "{% url 'close_chat_session' %}",
+        method: "POST",
+        headers: { "X-CSRFToken": getCSRFToken() },
+        success: function (res) {
+          currentSessionId = null;
+          updateUI(false);
+        }
+      });
+    }
   });
+  
 </script>
 {% endblock %}

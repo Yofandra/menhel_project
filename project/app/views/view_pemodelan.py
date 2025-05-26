@@ -2,16 +2,15 @@ from django.shortcuts import render
 import joblib
 from utils.model_kmeans import clean_text  # pastikan fungsi preprocessing dipisah di utils
 import os
+from django.conf import settings
 
-# Tentukan BASE_DIR ke folder project secara langsung
-BASE_DIR = r'D:\Kulyah\#Skripsweet\code\menhel_project\project'
 
-# Load model & vectorizer dengan path relatif dari BASE_DIR
-vectorizer = joblib.load(os.path.join(BASE_DIR, 'utils', 'model', 'vectorizer.pkl'))
-scaler = joblib.load(os.path.join(BASE_DIR, 'utils', 'model', 'scaler.pkl'))
-svd_model = joblib.load(os.path.join(BASE_DIR, 'utils', 'model', 'svd_model.pkl'))
-kmeans_model = joblib.load(os.path.join(BASE_DIR, 'utils', 'model', 'kmeans_model.pkl'))
-cluster_labels = joblib.load(os.path.join(BASE_DIR, 'utils', 'model', 'cluster_labels.pkl'))
+# Load model & vectorizer
+vectorizer = joblib.load(settings.MODEL_DIR / 'vectorizer.pkl')
+scaler = joblib.load(settings.MODEL_DIR / 'scaler.pkl')
+svd_model = joblib.load(settings.MODEL_DIR / 'svd_model.pkl')
+kmeans_model = joblib.load(settings.MODEL_DIR / 'kmeans_model.pkl')
+cluster_labels = joblib.load(settings.MODEL_DIR / 'cluster_labels.pkl')
 
 # Fungsi prediksi cluster
 def predict_cluster(text_input):

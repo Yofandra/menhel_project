@@ -14,12 +14,7 @@ class MyUserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    ROLE_CHOICES = [
-        ('admin', 'Admin'),
-        ('user', 'User')
-    ]
     username = models.CharField(max_length=50, unique=True, db_index=True)
-    role = models.CharField(max_length=100, choices=ROLE_CHOICES, null=True)
 
     objects = MyUserManager()
 

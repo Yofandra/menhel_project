@@ -5,13 +5,10 @@
       <div>
         <h5 class="card-title mb-0">Chart Klasifikasi Emosi</h5>
       </div>
-      <div>
-        <select id="sessionIndex" class="form-control" style="width: 150px">
-          <option value="1">Sesi 1</option>
-          <option value="2">Sesi 2</option>
-          <!-- Tambahkan opsi dinamis jika perlu -->
-        </select>
-      </div>
+    </div>
+    <div class="card-body">
+      <!-- Tambahkan ini -->
+      <div id="chartEmosi"></div>
     </div>
   </div>
 
@@ -43,12 +40,12 @@
 
         const chartColors = {
           donut: {
-            series1: "#826bf8",
-            series2: "#fee802",
-            series3: "#3fd0bd",
-            series4: "#ff6f61",
-            series5: "#2b9bf4",
-            series6: "#2b9bf4",
+            series1: "#ea5455",
+            series2: "#ff9f43",
+            series3: "#0077b5",
+            series4: "#7367f0",
+            series5: "#ea4c89",
+            series6: "#4b4b4b",
           },
         };
 
@@ -209,7 +206,7 @@
             );
         }
 
-        const sessionPicker = document.querySelector("#sessionIndex");
+        const sessionPicker = document.querySelector("#session");
         if (sessionPicker) {
           sessionPicker.addEventListener("change", function () {
             const selectedSession = sessionPicker.value;

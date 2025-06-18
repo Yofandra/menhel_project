@@ -6,9 +6,17 @@
 {% endblock %}
 
 {% block content %}
-<!-- Container Utama -->
 <div class="container-xxl flex-grow-1 container-p-y">
-    {% include 'emosi/chart_emosi.html' %}
-    {% include 'emosi/table_emosi.html' %}
+    <div class="row">
+        <div class="col-12 col-xl-9">
+            {% include 'emosi/table_emosi.html' %}
+        </div>
+        <div class="col-xl-3 col-12">
+            <div class="row">
+                {% include 'emosi/chart_emosi.html' %}
+            </div>
+        </div>
+    </div>
 </div>
+
 {% endblock %}

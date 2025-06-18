@@ -10,11 +10,21 @@
                         <h5 class="card-title mb-0">Chat Logs</h5>
                     </div>
                     <div class="dt-action-buttons text-end pt-6 pt-md-0">
-                        <div class="dt-buttons btn-group flex-wrap">
-                            <button class="btn btn-secondary create-new btn-primary waves-effect waves-light" tabindex="0" aria-controls="DataTables_Table_0" type="button" data-bs-toggle="offcanvas" data-bs-target="#add-new-record">
-                                <span><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Tambah Department</span></span>
-                            </button>
-                        </div>
+                        <form method="get" id="filter-form">
+                            <div class="col-sm-12">
+                                <label class="form-label" for="session">Session</label>
+                                <select id="session" name="session" class="form-select" onchange="document.getElementById('filter-form').submit();">
+                                    <option value="">-- Semua Session --</option>
+                                    {% for session in sessions %}
+                                        <option value="{{ session.id }}" {% if session.id|stringformat:"s" == selected_session_id %}selected{% endif %}>
+                                            {{ session.nama }}
+                                        </option>
+                                    {% empty %}
+                                        <option value="">No sessions available</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <hr class="my-0">
@@ -22,7 +32,6 @@
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Session</th>
                             <th>Message</th>
                             <th>Emosi</th>
                         </tr>
@@ -42,9 +51,14 @@
         var button = '<button type="button" class="btn btn-label-danger">Danger</button>';
         var table = $('#chatLogTable').DataTable({
             "processing": true,
+            "searching": false,
+            "lengthChange": false,
             "serverSide": true,
             "ajax": {
                 "url": "{% url 'chat_list' %}",
+                "data": function(d) {
+                    d.session = $('#session').val();
+                },
                 "type": "GET",
                 "dataSrc": "data",
                 "error": function(xhr, error, thrown) {
@@ -53,7 +67,6 @@
             },
             "columns": [
                 { "data": "id" },
-                { "data": "session" },
                 { "data": "message" },
                 {
                     "data": "emosi",
@@ -62,10 +75,10 @@
                     "render": function(data, type, row, meta) {
                         var colorClass = {
                             "Marah": "btn-label-danger",
-                            "Senang": "btn-label-success",
-                            "Sedih": "btn-label-primary",
-                            "Takut": "btn-label-dark",
-                            "Cinta": "btn-label-pink",
+                            "Senang": "btn-label-warning",
+                            "Sedih": "btn-label-linkedin",
+                            "Takut": "btn-label-primary",
+                            "Cinta": "btn-label-dribble",
                             "Netral": "btn-label-secondary"
                         };
 

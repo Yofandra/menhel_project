@@ -11,27 +11,31 @@ from django.db.models import Count
 from collections import Counter
 
 def emosi(request):  # Pastikan ini sama dengan yang di url_emosi.py
+    sessions = ChatSession.objects.filter(user=request.user)
+    selected_session_id = request.GET.get('session')  # ambil session ID dari form GET
+
+    context = {
+        'sessions': sessions,
+        'selected_session_id': selected_session_id,
+    }
     if request.method == 'POST':
         input_text = request.POST.get('teks')
         hasil = classify_emotion(input_text)
         return render(request, 'emosi/index.html', {'hasil': hasil, 'input': input_text})
     
     # Ini untuk kasus GET (pertama kali buka halaman)
-    return render(request, 'emosi/index.html')
+    return render(request, 'emosi/index.html', context)
 
 def chat_list(request):
     draw = request.GET.get('draw')
     start = int(request.GET.get('start', 0))
     length = int(request.GET.get('length', 10))
-    search_value = request.GET.get('search[value]', '')
+    selected_session_id = request.GET.get('session')  # ambil dari dropdown
 
-    chatlogs = ChatLogs.objects.filter(session__user=request.user).order_by('session')
-
-    if search_value:
-        chatlogs = chatlogs.filter(
-            Q(message__icontains=search_value) |
-            Q(session__nama__icontains=search_value) 
-        )
+    if selected_session_id:
+        chatlogs = ChatLogs.objects.filter(session__user=request.user, session__id=selected_session_id)
+    else:
+        chatlogs = ChatLogs.objects.filter(session__user=request.user)
 
     total = ChatLogs.objects.filter(session__user=request.user).count()
     filtered = chatlogs.count()
@@ -41,17 +45,16 @@ def chat_list(request):
     data = []
     for chatlog in chatlogs_page.object_list:
         data.append({
-            'id' : chatlog.id,
-            'session' : chatlog.session.nama,
-            'message' : chatlog.message,
-            'emosi' : classify_emotion(chatlog.message),
+            'id': chatlog.id,
+            'message': chatlog.message,
+            'emosi': classify_emotion(chatlog.message),
         })
 
     response_data = {
         'draw': draw,
         'recordsTotal': total,
         'recordsFiltered': filtered,
-        'data': data
+        'data': data,
     }
 
     return JsonResponse(response_data)

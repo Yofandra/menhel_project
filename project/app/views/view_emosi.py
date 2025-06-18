@@ -7,6 +7,8 @@ from django.shortcuts import render, get_object_or_404
 from ..predictor import classify_emotion
 import json
 from django.views import View
+from django.db.models import Count
+from collections import Counter
 
 def emosi(request):  # Pastikan ini sama dengan yang di url_emosi.py
     if request.method == 'POST':
@@ -53,3 +55,26 @@ def chat_list(request):
     }
 
     return JsonResponse(response_data)
+
+def chart_emosi(request):
+    session_id = request.GET.get('session')
+
+    if session_id:
+        chat_logs = ChatLogs.objects.filter(session__id=session_id)
+    else:
+        chat_logs = ChatLogs.objects.all()
+
+    emosi_list = [classify_emotion(chat.message) for chat in chat_logs]
+
+    counted = Counter(emosi_list)
+    
+    labels = ['Marah', 'Senang', 'Sedih', 'Takut', 'Cinta', 'Netral']
+    series = [counted.get(label, 0) for label in labels]
+
+    chart_data = {
+        'labels': labels,
+        'series': series
+    }
+
+    return JsonResponse(chart_data)
+

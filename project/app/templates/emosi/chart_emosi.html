@@ -1,0 +1,225 @@
+{% load static %}
+<div class="col-xl-12 mb-4 col-md-3 col-6">
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between">
+      <div>
+        <h5 class="card-title mb-0">Chart Klasifikasi Emosi</h5>
+      </div>
+      <div>
+        <select id="sessionIndex" class="form-control" style="width: 150px">
+          <option value="1">Sesi 1</option>
+          <option value="2">Sesi 2</option>
+          <!-- Tambahkan opsi dinamis jika perlu -->
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      "use strict";
+
+      (function () {
+        let cardColor,
+          headingColor,
+          labelColor,
+          borderColor,
+          legendColor,
+          chartEmosi;
+
+        if (isDarkStyle) {
+          cardColor = config.colors_dark.cardColor;
+          headingColor = config.colors_dark.headingColor;
+          labelColor = config.colors_dark.textMuted;
+          legendColor = config.colors_dark.bodyColor;
+          borderColor = config.colors_dark.borderColor;
+        } else {
+          cardColor = config.colors.cardColor;
+          headingColor = config.colors.headingColor;
+          labelColor = config.colors.textMuted;
+          legendColor = config.colors.bodyColor;
+          borderColor = config.colors.borderColor;
+        }
+
+        const chartColors = {
+          donut: {
+            series1: "#826bf8",
+            series2: "#fee802",
+            series3: "#3fd0bd",
+            series4: "#ff6f61",
+            series5: "#2b9bf4",
+            series6: "#2b9bf4",
+          },
+        };
+
+        const donutChartEl = document.querySelector("#chartEmosi");
+
+        function fetchChartData(session) {
+          let url = "{% url 'chart_emosi' %}?session=" + session;
+
+          fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+              const donutChartConfig = {
+                chart: {
+                  height: 390,
+                  type: "donut",
+                },
+                labels: data.labels || [
+                  "Marah",
+                  "Senang",
+                  "Sedih",
+                  "Takut",
+                  "Cinta",
+                  "Netral",
+                ],
+                series: data.series || [0, 0, 0, 0, 0, 0],
+                colors: [
+                  chartColors.donut.series1,
+                  chartColors.donut.series2,
+                  chartColors.donut.series3,
+                  chartColors.donut.series4,
+                  chartColors.donut.series5,
+                  chartColors.donut.series6,
+                ],
+                stroke: {
+                  show: false,
+                  curve: "straight",
+                },
+                dataLabels: {
+                  enabled: true,
+                  formatter: function (val) {
+                    return parseInt(val, 10) + "%";
+                  },
+                },
+                legend: {
+                  show: true,
+                  position: "bottom",
+                  markers: { offsetX: -3 },
+                  itemMargin: {
+                    vertical: 3,
+                    horizontal: 10,
+                  },
+                  labels: {
+                    colors: legendColor,
+                    useSeriesColors: false,
+                  },
+                },
+                plotOptions: {
+                  pie: {
+                    donut: {
+                      labels: {
+                        show: true,
+                        name: {
+                          fontSize: "2rem",
+                          fontFamily: "Public Sans",
+                        },
+                        value: {
+                          fontSize: "1.2rem",
+                          color: legendColor,
+                          fontFamily: "Public Sans",
+                          formatter: function (val) {
+                            return parseInt(val, 10);
+                          },
+                        },
+                        total: {
+                          show: true,
+                          fontSize: "1.5rem",
+                          color: headingColor,
+                          label: "Total",
+                          formatter: function () {
+                            const total = (data.series || []).reduce(
+                              (a, b) => a + b,
+                              0
+                            );
+                            return total;
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                responsive: [
+                  {
+                    breakpoint: 992,
+                    options: {
+                      chart: { height: 380 },
+                      legend: {
+                        position: "bottom",
+                        labels: {
+                          colors: legendColor,
+                          useSeriesColors: false,
+                        },
+                      },
+                    },
+                  },
+                  {
+                    breakpoint: 576,
+                    options: {
+                      chart: { height: 320 },
+                      plotOptions: {
+                        pie: {
+                          donut: {
+                            labels: {
+                              show: true,
+                              name: { fontSize: "1.5rem" },
+                              value: { fontSize: "1rem" },
+                              total: { fontSize: "1.5rem" },
+                            },
+                          },
+                        },
+                      },
+                      legend: {
+                        position: "bottom",
+                        labels: {
+                          colors: legendColor,
+                          useSeriesColors: false,
+                        },
+                      },
+                    },
+                  },
+                  {
+                    breakpoint: 420,
+                    options: {
+                      chart: { height: 280 },
+                      legend: { show: false },
+                    },
+                  },
+                  {
+                    breakpoint: 360,
+                    options: {
+                      chart: { height: 250 },
+                      legend: { show: false },
+                    },
+                  },
+                ],
+              };
+
+              if (chartEmosi) {
+                chartEmosi.destroy();
+              }
+
+              if (donutChartEl) {
+                chartEmosi = new ApexCharts(donutChartEl, donutChartConfig);
+                chartEmosi.render();
+              }
+            })
+            .catch((error) =>
+              console.error("Error fetching chart data:", error)
+            );
+        }
+
+        const sessionPicker = document.querySelector("#sessionIndex");
+        if (sessionPicker) {
+          sessionPicker.addEventListener("change", function () {
+            const selectedSession = sessionPicker.value;
+            fetchChartData(selectedSession);
+          });
+
+          const defaultSession = sessionPicker.value;
+          fetchChartData(defaultSession);
+        }
+      })();
+    });
+  </script>
+</div>

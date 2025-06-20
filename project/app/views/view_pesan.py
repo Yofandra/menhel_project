@@ -10,6 +10,7 @@ import json
 from datetime import datetime
 from django.views import View
 from django.views.decorators.http import require_POST
+from ..predictor import classify_emotion
 
 def pesan(request):
     return render(request, 'pesan/index.html')
@@ -24,6 +25,7 @@ def chat_with_rasa(request):
         chat_logs = ChatLogs.objects.create(
             session=session,
             message=message,
+            emosi=classify_emotion(message),
             tanggal=datetime.now()
         )
         
@@ -35,6 +37,7 @@ def chat_with_rasa(request):
             rasa_response = response.json()
             reply = rasa_response[0].get("text") if rasa_response else "Maaf, tidak ada balasan."
             chat_logs.response = reply
+            
             chat_logs.save()
             return JsonResponse({"reply": reply})
         else:

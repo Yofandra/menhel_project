@@ -44,10 +44,13 @@ def chat_list(request):
 
     data = []
     for chatlog in chatlogs_page.object_list:
+        if chatlog.emosi is None or chatlog.emosi == '':
+            chatlog.emosi = classify_emotion(chatlog.message)
+            chatlog.save()
         data.append({
             'id': chatlog.id,
             'message': chatlog.message,
-            'emosi': classify_emotion(chatlog.message),
+            'emosi': chatlog.emosi,
         })
 
     response_data = {
@@ -66,8 +69,13 @@ def chart_emosi(request):
         chat_logs = ChatLogs.objects.filter(session__id=session_id)
     else:
         chat_logs = ChatLogs.objects.all()
+        
+    for chat in chat_logs:
+        if chat.emosi is None or chat.emosi == '':
+            chat.emosi = classify_emotion(chat.message)
+            chat.save()
 
-    emosi_list = [classify_emotion(chat.message) for chat in chat_logs]
+    emosi_list = [chat.emosi for chat in chat_logs]
 
     counted = Counter(emosi_list)
     
